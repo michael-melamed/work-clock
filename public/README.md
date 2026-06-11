@@ -19,7 +19,8 @@ Everything here is publicly accessible without authentication.
 | Route Type | Strategy |
 |---|---|
 | `/api/*` | **Network-first** — always try to fetch fresh data, fall back to offline error |
-| All other routes | **Cache-first** — serve from cache if available, fetch and cache otherwise |
+| Documents / Page Navigations | **Network-first** — bypasses caching to ensure correct server-side auth (middleware) |
+| Static Assets (JS, CSS, images, icons) | **Cache-first** — serve from cache if available, fetch and cache otherwise |
 
 ## Notes
 - `sw.js` must be served from the root (`/sw.js`) so it can control the full app scope.

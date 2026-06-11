@@ -1,9 +1,9 @@
-const CACHE_VERSION = 'work-clock-v1'
+const CACHE_VERSION = 'work-clock-v2'
 
 const STATIC_ASSETS = [
-  '/',
-  '/history',
   '/manifest.json',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
 ]
 
 const API_ROUTES = /^\/api\//
@@ -30,7 +30,7 @@ self.addEventListener('activate', (event) => {
   self.clients.claim()
 })
 
-// --- Fetch: cache-first for static, network-first for API ---
+// --- Fetch: cache-first for static, network-first for API & navigations ---
 self.addEventListener('fetch', (event) => {
   const { request } = event
 
@@ -39,13 +39,11 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(request.url)
 
-  // Network-first for API routes
+  // 1. Network-first for API routes
   if (API_ROUTES.test(url.pathname)) {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          // Don't cache non-OK API responses
-          if (!response.ok) return response
           return response
         })
         .catch(() => {
@@ -62,7 +60,19 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // Cache-first for everything else (static files, pages)
+  // 2. Network-first for page navigations (documents)
+  // This prevents caching redirect states (like / redirecting to /login) or stale session views
+  if (request.mode === 'navigate' || request.destination === 'document') {
+    event.respondWith(
+      fetch(request).catch(() => {
+        // If offline, fallback to cached pages if any exist
+        return caches.match(request)
+      })
+    )
+    return
+  }
+
+  // 3. Cache-first for other static assets (images, styles, scripts)
   event.respondWith(
     caches.match(request).then((cached) => {
       if (cached) return cached

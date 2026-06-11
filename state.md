@@ -74,3 +74,4 @@
 - `shifts` table holds the core domain logic, utilizing `clock_out` as a nullable field for ongoing shifts.
 - Auth callback redirects to `/` on success, and `/login?error=auth_failed` on failure.
 - Force dynamic rendering on status and history GET routes to prevent route caching in Next.js builds.
+- Adjusted PWA Service Worker caching strategy: Changed page navigations to Network-first (uncached) to prevent caching of auth redirect states.
