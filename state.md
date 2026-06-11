@@ -27,6 +27,7 @@
 - **Client Hooks** - `useShift.ts` and `useHistory.ts` updated to manage and mutate React states dynamically.
 - **Dashboard UI** - `app/(app)/page.tsx` built with large clock, active shift logic, user greeting, sign out button, and responsive UI.
 - **History UI** - `app/(app)/history/page.tsx` built with `ShiftCard` component, daily totals, monthly totals banner, and edit/delete modal.
+- **Rendering Configuration** - Configured `export const dynamic = 'force-dynamic'` on history and status GET APIs.
 
 ---
 
@@ -72,3 +73,4 @@
 - Created `profiles` table to extend `auth.users` with trigger-based `updated_at`.
 - `shifts` table holds the core domain logic, utilizing `clock_out` as a nullable field for ongoing shifts.
 - Auth callback redirects to `/` on success, and `/login?error=auth_failed` on failure.
+- Force dynamic rendering on status and history GET routes to prevent route caching in Next.js builds.

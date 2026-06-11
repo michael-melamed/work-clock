@@ -20,12 +20,14 @@ Ends the currently active shift for the user.
 ### `GET /api/shifts/status`
 Checks if the authenticated user has an active shift.
 - **Auth:** Required
+- **Rendering:** Dynamic (`export const dynamic = 'force-dynamic'`)
 - **Success:** Returns `200 OK` with `{ active: boolean, shift: Shift | null }`.
 
 ### `GET /api/shifts/history`
 Retrieves past completed shifts for the authenticated user.
 - **Auth:** Required
 - **Query Params:** `?limit=30` (defaults to 30, must be positive integer)
+- **Rendering:** Dynamic (`export const dynamic = 'force-dynamic'`)
 - **Success:** Returns `200 OK` with an array of completed shifts (`clock_out IS NOT NULL`), sorted by `clock_in DESC`. Each record includes `id`, `clock_in`, `clock_out`, `duration_minutes`, and a computed `duration_formatted`.
 
 ## Global Rules
