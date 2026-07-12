@@ -200,15 +200,14 @@ export default function DashboardPage() {
 
         {/* Digital Clock Display */}
         <div className="flex flex-col items-center justify-center my-auto">
-          <div className="flex items-baseline font-mono text-7xl font-extralight tracking-widest text-slate-100 drop-shadow-[0_0_20px_rgba(248,250,252,0.08)]">
+          <div className="flex items-baseline font-mono text-7xl font-extralight tracking-widest text-slate-100 drop-shadow-[0_0_20px_rgba(248,250,252,0.08)]" dir="ltr">
             <span>{hoursString}</span>
             <span className="text-4xl text-slate-400 font-light mx-1 animate-pulse">:</span>
             <span className="text-4xl text-slate-400 font-light">{secondsString}</span>
           </div>
-          <p className="text-[10px] uppercase tracking-widest text-slate-500 mt-2 font-medium">הזמן המקומי בשעון</p>
         </div>
 
-        {/* Dual-Button Implementation (Tamar's Request) */}
+        {/* Dual-Button Implementation (Tamar's Request with Glowing Glass design) */}
         <div className="w-full max-w-xs my-auto flex flex-col gap-4">
           <button
             onClick={handleClockIn}
@@ -216,14 +215,14 @@ export default function DashboardPage() {
             className={`
               w-full py-4 px-6 rounded-2xl text-center text-lg font-semibold transition-all active:scale-98
               ${isActive 
-                ? 'bg-slate-800 text-slate-500 opacity-40 grayscale pointer-events-none border border-slate-700/20' 
-                : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-[0_4px_20px_rgba(16,185,129,0.25)]'}
+                ? 'bg-slate-900/50 text-slate-600 border border-slate-800/40 opacity-30 grayscale pointer-events-none' 
+                : 'bg-emerald-500/10 hover:bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 hover:border-emerald-500/40 shadow-[0_0_30px_-5px_rgba(16,185,129,0.12)]'}
               disabled:cursor-not-allowed
             `}
             style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             {isSubmitting && !isActive ? (
-              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-emerald-400 border-t-transparent"></div>
             ) : (
               <span>כניסה למשמרת</span>
             )}
@@ -235,14 +234,14 @@ export default function DashboardPage() {
             className={`
               w-full py-4 px-6 rounded-2xl text-center text-lg font-semibold transition-all active:scale-98
               ${!isActive 
-                ? 'bg-slate-800 text-slate-500 opacity-40 grayscale pointer-events-none border border-slate-700/20' 
-                : 'bg-rose-600 hover:bg-rose-700 text-white shadow-[0_4px_20px_rgba(244,63,94,0.25)]'}
+                ? 'bg-slate-900/50 text-slate-600 border border-slate-800/40 opacity-30 grayscale pointer-events-none' 
+                : 'bg-rose-500/10 hover:bg-rose-500/15 text-rose-400 border border-rose-500/30 hover:border-rose-500/40 shadow-[0_0_30px_-5px_rgba(244,63,94,0.12)]'}
               disabled:cursor-not-allowed
             `}
             style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             {isSubmitting && isActive ? (
-              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              <div className="mx-auto h-7 w-7 animate-spin rounded-full border-2 border-rose-400 border-t-transparent"></div>
             ) : (
               <span>יציאה מהמשמרת</span>
             )}
