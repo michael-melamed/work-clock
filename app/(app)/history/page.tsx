@@ -360,6 +360,41 @@ export default function HistoryPage() {
           </div>
         </div>
       )}
+
+      {/* Floating Bottom Navigation Bar */}
+      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[320px] max-w-[92%]">
+        <div className="flex items-center justify-around px-4 py-2.5 rounded-full bg-slate-900/80 backdrop-blur-lg border border-slate-800/80 shadow-2xl">
+          <Link
+            href="/"
+            onClick={triggerHaptic}
+            className="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition-colors"
+          >
+            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+            </svg>
+            <span className="text-[10px] font-medium mt-0.5">דשבורד</span>
+          </Link>
+
+          <div className="flex flex-col items-center justify-center text-emerald-400 cursor-default">
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="text-[10px] font-bold mt-0.5">היסטוריה</span>
+          </div>
+
+          <Link
+            href="/settings"
+            onClick={triggerHaptic}
+            className="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200 transition-colors"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756-2.924 0-3.35a1.724 1.724 0 00-1.066-2.573c.94-1.543-.826-3.31-2.37-2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span className="text-[10px] font-medium mt-0.5">הגדרות</span>
+          </Link>
+        </div>
+      </nav>
     </div>
   )
 }
