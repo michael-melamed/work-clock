@@ -92,3 +92,74 @@ self.addEventListener('fetch', (event) => {
     })
   )
 })
+
+// --- Push: handle incoming push notifications ---
+self.addEventListener('push', (event) => {
+  if (!event.data) return
+
+  let payload
+  try {
+    payload = event.data.json()
+  } catch {
+    payload = { title: '⏱️ WorkClock', body: event.data.text(), actions: [] }
+  }
+
+  const { title, body, actions = [], tag = 'work-clock-automation' } = payload
+
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body,
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      tag,
+      renotify: true,
+      requireInteraction: true,
+      dir: 'rtl',
+      lang: 'he',
+      actions,
+      data: payload,
+    })
+  )
+})
+
+// --- Notification click: handle action buttons ---
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+
+  const action = event.action
+
+  const openApp = (path) =>
+    event.waitUntil(
+      self.clients
+        .matchAll({ type: 'window', includeUncontrolled: true })
+        .then((clientList) => {
+          for (const client of clientList) {
+            if ('focus' in client) {
+              client.focus()
+              if ('navigate' in client) client.navigate(path)
+              return
+            }
+          }
+          return self.clients.openWindow(path)
+        })
+    )
+
+  if (action === 'clock-in-now') {
+    event.waitUntil(
+      fetch('/api/shifts/clock-in', { method: 'POST' })
+        .then(() => openApp('/'))
+        .catch(() => openApp('/'))
+    )
+  } else if (action === 'clock-out-now') {
+    event.waitUntil(
+      fetch('/api/shifts/clock-out', { method: 'POST' })
+        .then(() => openApp('/'))
+        .catch(() => openApp('/'))
+    )
+  } else if (action === 'remind-later' || action === 'dismiss') {
+    // Just close — server handles re-scheduling
+  } else {
+    // Default tap — open the app
+    openApp('/')
+  }
+})

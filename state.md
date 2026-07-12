@@ -1,7 +1,7 @@
 # Project State
 
 ## Current Stage
-**13 Premium UX/UI Redesign Completed** (Dark mode default, tactile pulsing buttons, haptic feedback, bottom-sheet summaries, floating navigation capsule, and complete Hebrew translation)
+**14 — Shift Automation Feature Completed** (Schedule + Geofence + Push Notifications + Settings UI)
 
 ---
 

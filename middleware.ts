@@ -42,5 +42,5 @@ export async function middleware(req: NextRequest) {
  * everything under app/(app)/.
  */
 export const config = {
-  matcher: ['/', '/history/:path*'],
+  matcher: ['/', '/history/:path*', '/settings/:path*'],
 }
