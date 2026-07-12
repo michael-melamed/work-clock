@@ -67,7 +67,7 @@ export async function PUT(req: Request): Promise<NextResponse<ApiResponse<Automa
     // Upsert — inserts if not exists, updates otherwise
     const { data, error } = await supabase
       .from('automation_settings')
-      .upsert({ user_id: userId, ...body })
+      .upsert({ user_id: userId, ...body }, { onConflict: 'user_id' })
       .select()
       .single()
 
