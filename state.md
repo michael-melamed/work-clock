@@ -1,7 +1,7 @@
 # Project State
 
 ## Current Stage
-**12 History Advanced Features Completed** (daily/monthly totals, shift editing and deletion)
+**13 Premium UX/UI Redesign Completed** (Dark mode default, tactile pulsing buttons, haptic feedback, bottom-sheet summaries, floating navigation capsule, and complete Hebrew translation)
 
 ---
 
@@ -25,9 +25,14 @@
 - **Shift API** - `clock-in`, `clock-out`, `status`, `history` GET/POST endpoints completed.
 - **Dynamic API** - `PATCH` / `DELETE` /api/shifts/[id] endpoints for shift editing and deletion.
 - **Client Hooks** - `useShift.ts` and `useHistory.ts` updated to manage and mutate React states dynamically.
-- **Dashboard UI** - `app/(app)/page.tsx` built with large clock, active shift logic, user greeting, sign out button, and responsive UI.
-- **History UI** - `app/(app)/history/page.tsx` built with `ShiftCard` component, daily totals, monthly totals banner, and edit/delete modal.
 - **Rendering Configuration** - Configured `export const dynamic = 'force-dynamic'` on history and status GET APIs.
+- **Adjusted Caching Strategy** - Changed PWA page navigations to Network-first (uncached) to prevent caching of auth redirect states.
+- **Premium UX/UI Redesign:**
+  - Redesigned `app/globals.css` with responsive glassmorphism classes (`glass-panel`, `glass-card`), ambient slow glows, and custom pulse-glow animations.
+  - Redesigned `app/(app)/page.tsx` (Dashboard) as a dark-mode first tactile interface, featuring a sports-watch digital clock with secondary seconds display, an interactive button with haptic vibrations (`navigator.vibrate`), dynamic tab title updates showing active duration, and a slide-up bottom sheet for completed shift summaries.
+  - Redesigned `app/(app)/history/page.tsx` to match the slate-950 and glass aesthetic, utilizing updated dark-themed glass cards (`ShiftCard`), daily totals separator banners, and a dark-theme edit/delete shift modal.
+  - Redesigned `app/(auth)/login/page.tsx` with a matching dark-mode glass layout and Hebrew text.
+  - Created a floating glass-capsule navigation bar at the bottom of all protected pages for native app-like routing between Dashboard and History.
 
 ---
 
@@ -36,16 +41,17 @@
 | File | Purpose |
 |---|---|
 | `app/layout.tsx` | Root layout (fonts, global CSS) |
-| `app/(app)/page.tsx` | Main Dashboard screen (Clock-in/out UI, Sign Out, User greeting) |
-| `app/(app)/history/page.tsx` | Shift history page with daily/monthly totals and edit modal |
-| `components/features/ShiftCard.tsx` | Displays a single shift card with onEdit button |
+| `app/globals.css` | Global styling, animations, variables, and glassmorphism utilities |
+| `app/(app)/page.tsx` | Redesigned Premium Dashboard screen (haptics, title updates, bottom-sheet summary) |
+| `app/(app)/history/page.tsx` | Redesigned History screen with glass cards and dark edit modal |
+| `components/features/ShiftCard.tsx` | Redesigned glassmorphism shift card matching the dark theme |
+| `app/(auth)/login/page.tsx` | Redesigned Hebrew Login screen |
 | `lib/supabase/client.ts` | Browser Supabase client |
 | `lib/supabase/server.ts` | Server Supabase client |
 | `middleware.ts` | Edge middleware — session refresh + route protection |
 | `supabase/migrations/001_initial_schema.sql` | SQL schema for `profiles` and `shifts` |
 | `supabase/migrations/002_auto_profile.sql` | SQL for user creation trigger |
 | `supabase/migrations/003_shift_delete_policy.sql` | SQL for shift deletion RLS policy |
-| `app/(auth)/login/page.tsx` | Login UI and OAuth trigger |
 | `app/auth/callback/route.ts` | OAuth session exchange handler |
 | `lib/supabase/actions/profile.ts` | `getProfile(userId)` server action |
 | `types/api.ts` | Standardized `ApiResponse<T>` interface |
@@ -61,17 +67,3 @@
 **Deploy & Validate App:**
 - Ensure the app is deployed on Vercel.
 - Validate PWA features in production.
-
----
-
-## 🗒️ Decisions Made
-
-- Google OAuth configured in Supabase Dashboard only — no client IDs in code
-- `@supabase/auth-helpers-nextjs` kept (deprecated but functional for this project)
-- Protected routes: `/` and `/history/:path*`
-- Middleware preserves original destination in `?next=` param for post-login redirect
-- Created `profiles` table to extend `auth.users` with trigger-based `updated_at`.
-- `shifts` table holds the core domain logic, utilizing `clock_out` as a nullable field for ongoing shifts.
-- Auth callback redirects to `/` on success, and `/login?error=auth_failed` on failure.
-- Force dynamic rendering on status and history GET routes to prevent route caching in Next.js builds.
-- Adjusted PWA Service Worker caching strategy: Changed page navigations to Network-first (uncached) to prevent caching of auth redirect states.

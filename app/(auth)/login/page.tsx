@@ -23,28 +23,38 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 rounded-2xl bg-white p-10 shadow-xl dark:bg-gray-800">
+    <div className="flex min-h-screen items-center justify-center bg-[#090d16] px-4 py-12 sm:px-6 lg:px-8 select-none" dir="rtl">
+      <div className="w-full max-w-sm space-y-8 rounded-2xl glass-panel p-8 shadow-2xl border border-slate-800/80 text-center">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Work Clock
+          {/* Logo Icon */}
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4 animate-pulse-glow">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-black tracking-tight text-white">
+            WorkClock
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Sign in to start tracking your hours
+          <p className="mt-2 text-xs text-slate-400 leading-relaxed max-w-[240px] mx-auto">
+            התחבר כדי להתחיל לעקוב אחר שעות העבודה שלך בצורה פשוטה ואמינה.
           </p>
         </div>
-        <div className="mt-8 space-y-6">
+        
+        <div className="mt-8">
           <button
             onClick={handleLogin}
             disabled={isLoading}
-            className="group relative flex w-full justify-center rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:opacity-70 dark:focus:ring-offset-gray-800"
+            className="group relative flex w-full justify-center items-center gap-3 rounded-xl bg-white hover:bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-all active:scale-95 disabled:opacity-75"
+            style={{ WebkitTapHighlightColor: 'transparent' }}
           >
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-              <svg className="h-5 w-5 text-blue-500 group-hover:text-blue-400" viewBox="0 0 24 24" fill="currentColor">
+            {isLoading ? (
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-900 border-t-transparent"></div>
+            ) : (
+              <svg className="h-4 w-4 text-slate-950" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/>
               </svg>
-            </span>
-            {isLoading ? 'Connecting to Google...' : 'Sign in with Google'}
+            )}
+            <span>{isLoading ? 'מתחבר ל-Google...' : 'התחברות באמצעות Google'}</span>
           </button>
         </div>
       </div>
