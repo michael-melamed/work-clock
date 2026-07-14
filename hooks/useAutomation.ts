@@ -132,26 +132,41 @@ export function useAutomation() {
    * Subscribe to Web Push notifications.
    * Stores the PushSubscription in automation_settings.push_subscription.
    * Requires the browser to support Push API and the user to grant permission.
+  /**
+   * Subscribe to Web Push notifications.
+   * Stores the PushSubscription in automation_settings.push_subscription.
+   * Requires the browser to support Push API and the user to grant permission.
    */
   const subscribeToPush = useCallback(async (): Promise<boolean> => {
     if (typeof window === 'undefined') return false
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-      console.warn('[useAutomation] Push API not supported in this browser')
+      const msg = 'Push API אינו נתמך בדפדפן זה'
+      console.warn('[useAutomation]', msg)
+      setState(prev => ({ ...prev, error: msg }))
       return false
     }
 
     try {
       const permission = await Notification.requestPermission()
-      if (permission !== 'granted') return false
+      if (permission !== 'granted') {
+        const msg = 'הרשאת התראות נדחתה. יש לאשר התראות בהגדרות הדפדפן/האפליקציה'
+        console.warn('[useAutomation]', msg)
+        setState(prev => ({ ...prev, error: msg }))
+        return false
+      }
 
       const registration = await navigator.serviceWorker.ready
       const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
       if (!vapidPublicKey) throw new Error('NEXT_PUBLIC_VAPID_PUBLIC_KEY is not set')
 
-      // Convert VAPID Base64 key to Uint8Array using Buffer (Node.js compatible)
-      const vapidKey = vapidPublicKey.replace(/-/g, '+').replace(/_/g, '/')
-      const paddedKey = vapidKey.padEnd(vapidKey.length + (4 - (vapidKey.length % 4)) % 4, '=')
-      const rawBytes = Uint8Array.from(atob(paddedKey), (c) => c.charCodeAt(0))
+      // Convert VAPID Base64 key to Uint8Array standardly
+      const padding = '='.repeat((4 - (vapidPublicKey.length % 4)) % 4)
+      const base64 = (vapidPublicKey + padding).replace(/-/g, '+').replace(/_/g, '/')
+      const rawData = window.atob(base64)
+      const rawBytes = new Uint8Array(rawData.length)
+      for (let i = 0; i < rawData.length; ++i) {
+        rawBytes[i] = rawData.charCodeAt(i)
+      }
 
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
@@ -163,6 +178,7 @@ export function useAutomation() {
       return true
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'שגיאה בהרשמה לעדכונים'
+      console.error('[useAutomation] Push subscribe error:', err)
       setState(prev => ({ ...prev, error: message }))
       return false
     }
